@@ -1,0 +1,50 @@
+{
+    "@context": {
+        "@vocab": "http://github.com/common-workflow-language/schema/wf#",
+        "source": {"@type": "@id"},
+        "destination": {"@type": "@id"},
+        "source_port": {"@type": "@id"},
+        "destination_port": {"@type": "@id"},
+        "tool": {"@type": "@id"}
+    },
+    "@id":"",
+    "@type": "Workflow",
+    "inputs": [
+        {"@id": "#file1"}
+    ],
+    "outputs": [
+        { "@id": "#file_out" }
+    ],
+    "steps": [
+        {
+            "@id": "#sort",
+            "@type": "http://github.com/common-workflow-language/schema/wf#step",
+            "tool": "sort-tool.json"
+        },
+        {
+            "@id": "#rev",
+            "@type": "http://github.com/common-workflow-language/schema/wf#step",
+            "tool": "rev-tool.json"
+        }
+    ],
+    "connections":[
+        {
+            "source":"",
+            "source_port":"#file1",
+            "destination":"#sort",
+            "destination_port":"sort-tool.json#file1"
+        },
+        {
+            "source":"#sort",
+            "source_port":"sort-tool.json#output",
+            "destination":"#rev",
+            "destination_port":"rev-tool.json#file1"
+        },
+        {
+            "source":"#rev",
+            "source_port":"rev-tool.json#output",
+            "destination":"",
+            "destination_port":"#file_out"
+        }
+    ]
+}

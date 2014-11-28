@@ -35,7 +35,8 @@ setup(name='cwltool',
       package_data={'cwltool': ['schemas/*.json']},
       include_package_data=True,
       install_requires=[
-          'jsonschema >= 2.4.0'
+          'jsonschema >= 2.4.0',
+          'rdflib-jsonld'
         ],
       test_suite='tests',
       tests_require=[],

@@ -1,0 +1,28 @@
+{
+    "documentAuthor": ["peter.amstutz@curoverse.com"],
+    "documentDescription": "Reverse the contents of a file to stdout using 'rev' running in a docker container.",
+    "requirements": {
+        "environment": {
+            "container": {
+                "type": "docker",
+                "imageId": "arvados/jobs"
+            }
+        }
+    },
+    "inputs": {
+        "type": "object",
+        "required": [ "file1" ],
+        "properties": {
+            "file1": {
+                "type": "file",
+                "adapter": {
+                    "order": 1
+                }
+            }
+        }
+    },
+    "adapter": {
+        "baseCmd": "rev",
+        "stdout":"reversed.txt"
+    }
+}
