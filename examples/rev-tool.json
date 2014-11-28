@@ -21,6 +21,17 @@
             }
         }
     },
+    "outputs": {
+        "type": "object",
+        "required": [ "output" ],
+        "properties":{
+            "output": {
+                "adapter": {
+                    "glob":"reversed.txt"
+                }
+            }
+        }
+    },
     "adapter": {
         "baseCmd": "rev",
         "stdout":"reversed.txt"

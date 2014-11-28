@@ -17,7 +17,9 @@ class RunStep(object):
         for k, v in row.items():
             s = k[len(self.prefix):]
             job['inputs'][s] = json.loads(v)
-        self.tool.job(job, self.basedir, use_container=False).run()
+        output = self.tool.job(job, self.basedir, use_container=False).run()
+        for o in output:
+            nw.propagate(None, (name, rdflib.URIRef(self.prefix+o), rdflib.Literal(json.dumps(output[o]), datatype="http://json.org")))
 
 class Workflow(object):
     def __init__(self, wf=None, basedir=None):
