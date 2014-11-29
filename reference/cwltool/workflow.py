@@ -89,3 +89,8 @@ class Workflow(object):
         for r in q:
             self.root = r[0]
             self.inputs.append(r[1])
+
+    def run(self, joborder):
+        for k, v in joborder["inputs"].items():
+            self.network.propagate(None, (self.root, rdflib.URIRef(self.root+"#"+k),
+                    rdflib.Literal(json.dumps(v), datatype="http://json.org")))
