@@ -6,6 +6,7 @@ import sys
 import jsonschema
 import cwltool.tool as tool
 import os
+import copy
 
 from cwltool.ref_resolver import from_url
 
@@ -31,23 +32,38 @@ def main():
     w.write("<tool id=\"%s\" name=\"%s\">\n" % (os.path.basename(args.tool), os.path.basename(args.tool)))
 
     w.write("  <inputs>\n")
-    for k,v in t.tool['inputs']['properties'].items():
-        w.write("    <param ")
-        w.write("name=\"%s\" " % k)
-        w.write("type=\"")
-        if v['type'] == 'integer':
-            w.write("integer")
-        elif v['type'] == 'number':
-            w.write("float")
-        elif v['type'] == 'string':
-            w.write("text")
-        elif v['type'] == 'boolean':
-            w.write("boolean")
-        elif v['_type'] == 'file':
-            w.write("data")
 
-        w.write("\"")
-        w.write("/>\n")
+    def handle_param(k, v, indent):
+        #print v
+        if v['type'] == 'array':
+            w.write(indent+"<repeat name=\"%s\">\n" % k)
+            if 'type' in v['items']:
+                if v['items']['type'] == 'object' and not ('_type' in v['items'] and v['items']['_type'] == 'file'):
+                    for k1,v1 in v['items']['properties'].items():
+                        handle_param(k1, v1, indent+"  ")
+                else:
+                    handle_param("item", v['items'], indent+"  ")
+            w.write(indent+"</repeat>\n")
+        else:
+            w.write(indent+"<param ")
+            w.write("name=\"%s\" " % k)
+            w.write("type=\"")
+            if v['type'] == 'integer':
+                w.write("integer")
+            elif v['type'] == 'number':
+                w.write("float")
+            elif v['type'] == 'string':
+                w.write("text")
+            elif v['type'] == 'boolean':
+                w.write("boolean")
+            elif v['type'] == 'file' or ('_type' in v and v['_type'] == 'file'):
+                w.write("data")
+            w.write("\" ")
+            w.write("/>\n")
+
+    for k,v in t.tool['inputs']['properties'].items():
+        handle_param(k, v,  "    ")
+
     w.write("  </inputs>\n")
 
     w.write("  <outputs>\n")
@@ -71,30 +87,48 @@ def main():
 
     w.write("  <command>")
 
+    def adapt(k, v):
+        if 'adapter' in v:
+            va = v['adapter']
+            p = va['prefix'] if 'prefix' in va else ''
+            s = va['separator'] if 'separator' in va else ''
+            if v['type'] == 'array':
+                if 'itemSeparator' in va:
+                    val = "%s%s#for $i, $v in enumerate(${%s})##if $i!=0#%s#end if#$v#endfor#" % (p, s, k, va["itemSeparator"])
+                else:
+                    val = "#for $v in ${%s}# \"%s%s$v\" #end for#" % (k, p, s)
+                adapters.append({"order": [va['order']] if 'order' in va else [10000000],
+                                "value": val})
+            else:
+                adapters.append({"order": [va['order']] if 'order' in va else [10000000],
+                                "value": "%s%s${%s}" % (p, s, k)})
+
     if "args" in adapter:
         for i, a in enumerate(adapter["args"]):
             a = copy.copy(a)
             if "order" in a:
                 a["order"] = [a["order"]]
             else:
-                a["order"] = [0]
+                a["order"] = [1000000]
             adapters.append(a)
 
     for k,v in t.tool['inputs']['properties'].items():
-        if 'adapter' in v:
-            va = v['adapter']
-            p = va['prefix'] if 'prefix' in va else ''
-            s = va['separator'] if 'separator' in va else ''
-            adapters.append({"order": [va['order']] if 'order' in va else [0],
-                             "value": "%s%s${%s}" % (p, s, k)})
+        adapt(k, v)
 
     adapters.sort(key=lambda a: a["order"])
 
-    for a in adapters:
-        w.write("\"" + a["value"] + "\" ")
+    for f in tool.flatten([a["value"] for a in adapters]):
+        if isinstance(f, dict):
+            if "$job" in f:
+                print >>sys.stderr, "WARNING: $job not supported yet"
+            if "$expr" in f:
+                print >>sys.stderr, "ERROR: $expr not supported"
+        else:
+            w.write(f)
+            w.write(" ")
 
     if stdout_param:
-        w.write(" &gt; ${%s}" % stdout_param)
+        w.write("&gt; ${%s}" % stdout_param)
     w.write("</command>\n")
 
     w.write("</tool>\n")
