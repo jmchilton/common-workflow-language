@@ -1,0 +1,10 @@
+{
+  "@context": {
+    "@vocab": "http://github.com/common-workflow-language/schema/wf#"
+  },
+  "@id": "",
+  "@type": "SimpleTransformTool",
+  "inputs": {"@id": "#arr", "depth": 1},
+  "outputs": {"@id": "#product", "depth": 0},
+  "expr": "{return {product: $job.inputs.arr.reduce(function(a,b){return a*b;}, 1)};}"
+}

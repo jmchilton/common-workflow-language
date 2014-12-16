@@ -1,0 +1,39 @@
+{
+  "@context": {
+    "@vocab": "http://github.com/common-workflow-language/schema/wf#",
+    "source": {"@type": "@id"},
+    "destination": {"@type": "@id"},
+    "tool": {"@type": "@id"}
+  },
+  "@id": "",
+  "@type": "Workflow",
+  "inputs": [{"@id": "#a", "depth": 0}, {"@id": "#b", "depth": 0}, {"@id": "#c", "depth": 0}],
+  "outputs": {"@id": "#aplusbtimesc", "depth": 0},
+  "steps": [
+    {
+      "@id": "#add",
+      "tool": "simple_add.json",
+      "inputs": [
+        {"@id": "#add/a", "impl": "simple_add.json#a", "depth": 0},
+        {"@id": "#add/b", "impl": "simple_add.json#b", "depth": 0}
+      ],
+      "outputs": {"@id": "#add/c", "impl": "simple_add.json#c", "depth": 0}
+    },
+    {
+      "@id": "#mul",
+      "tool": "simple_mul.json",
+      "inputs": [
+        {"@id": "#mul/a", "impl": "simple_mul.json#a", "depth": 0},
+        {"@id": "#mul/b", "impl": "simple_mul.json#b", "depth": 0}
+      ],
+      "outputs": {"@id": "#mul/c", "impl": "simple_mul.json#c", "depth": 0}
+    }
+  ],
+  "connections": [
+    {"source": "#a", "destination": "#add/a"},
+    {"source": "#b", "destination": "#add/b"},
+    {"source": "#c", "destination": "#mul/b"},
+    {"source": "#add/c", "destination": "#mul/a"},
+    {"source": "#mul/c", "destination": "#aplusbtimesc"}
+  ]
+}

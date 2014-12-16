@@ -1,0 +1,36 @@
+{
+  "@context": {
+    "@vocab": "http://github.com/common-workflow-language/schema/wf#",
+    "source": {"@type": "@id"},
+    "destination": {"@type": "@id"},
+    "tool": {"@type": "@id"}
+  },
+  "@id": "",
+  "@type": "Workflow",
+  "inputs": [{"@id": "#a", "depth": 0}, {"@id": "#b", "depth": 0}, {"@id": "#c", "depth": 0}],
+  "outputs": {"@id": "#aplusbtimesc", "depth": 0},
+  "steps": [
+    {
+      "@id": "#mul",
+      "tool": "simple_mul.json",
+      "inputs": [
+        {"@id": "#mul/a", "impl": "simple_mul.json#a", "depth": 0},
+        {"@id": "#mul/b", "impl": "simple_mul.json#b", "depth": 0}
+      ],
+      "outputs": {"@id": "#mul/c", "impl": "simple_mul.json#c", "depth": 0}
+    },
+    {
+      "@id": "#sum",
+      "tool": "simple_sum.json",
+      "inputs": {"@id": "#sum/arr", "impl": "simple_sum.json#arr", "depth": 1},
+      "outputs": {"@id": "#sum/sum", "impl": "simple_sum.json#sum", "depth": 0}
+    }
+  ],
+  "connections": [
+    {"source": "#a", "destination": "#mul/a"},
+    {"source": "#b", "destination": "#mul/a"},
+    {"source": "#c", "destination": "#mul/b"},
+    {"source": "#mul/c", "destination": "#sum/arr"},
+    {"source": "#sum/sum", "destination": "#aplusbtimesc"}
+  ]
+}
