@@ -1,14 +1,12 @@
 inputs:
-  id: file1
+  id: "#file1"
   depth: 0
   schema:
     type: File
 
 requirements:
   - "@type": DockerContainer
-    image:
-      "@type": DockerImage
-      dockerRepo: arvados/jobs
+    dockerRepo: arvados/jobs
 
 baseCmd: [cat]
 

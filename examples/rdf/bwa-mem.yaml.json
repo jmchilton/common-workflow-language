@@ -1,0 +1,90 @@
+{
+  "adapters": [
+    {
+      "argValue": {
+        "@type": "Transform", 
+        "language": "javascript", 
+        "value": "$job.allocatedResources.cpu"
+      }, 
+      "position": 1, 
+      "prefix": "-t"
+    }
+  ], 
+  "baseCmd": [
+    "bwa", 
+    "mem"
+  ], 
+  "inputs": [
+    {
+      "depth": 0, 
+      "id": "#reference", 
+      "schema": {
+        "adapter": {
+          "position": 2
+        }, 
+        "type": "File"
+      }
+    }, 
+    {
+      "depth": 1, 
+      "id": "#reads", 
+      "schema": {
+        "adaper": {
+          "position": 3
+        }, 
+        "items": "File", 
+        "type": "array"
+      }, 
+      "streamable": true
+    }, 
+    {
+      "depth": 0, 
+      "id": "#minimum_seed_length", 
+      "schema": {
+        "adapter": {
+          "position": 1, 
+          "prefix": "-m"
+        }, 
+        "type": "int"
+      }
+    }, 
+    {
+      "depth": 1, 
+      "id": "#min_std_max_min", 
+      "schema": {
+        "adapter": {
+          "itemSeparator": ",", 
+          "position": 1, 
+          "prefix": "-I"
+        }, 
+        "items": "int", 
+        "type": "array"
+      }
+    }
+  ], 
+  "outputs": [
+    {
+      "depth": 0, 
+      "id": "#sam", 
+      "schema": {
+        "adapter": {
+          "glob": "output.sam", 
+          "streamable": true
+        }, 
+        "type": "File"
+      }
+    }
+  ], 
+  "requirements": [
+    {
+      "@type": "DockerContainer", 
+      "dockerRepo": "images.sbgenomics.com/rabix/bwa", 
+      "imageId": "9d3b9b0359cf"
+    }, 
+    {
+      "@type": "MemoryRequirement", 
+      "value": 5000
+    }
+  ], 
+  "stdout": "output.sam"
+}

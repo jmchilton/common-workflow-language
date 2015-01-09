@@ -1,0 +1,15 @@
+{
+  "baseCmd": [
+    "cat"
+  ], 
+  "inputs": {
+    "depth": 0, 
+    "id": "#file1", 
+    "schema": {
+      "adapter": {
+        "order": 1
+      }, 
+      "type": "File"
+    }
+  }
+}

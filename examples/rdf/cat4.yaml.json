@@ -1,0 +1,24 @@
+{
+  "baseCmd": [
+    "cat"
+  ], 
+  "inputs": {
+    "depth": 0, 
+    "id": "#file1", 
+    "schema": {
+      "type": "File"
+    }
+  }, 
+  "requirements": [
+    {
+      "@type": "DockerContainer", 
+      "dockerRepo": "arvados/jobs"
+    }
+  ], 
+  "stdin": {
+    "@type": "Transform", 
+    "language": "jsonpointer", 
+    "value": "#inputs/file1/path"
+  }, 
+  "stdout": "output.txt"
+}

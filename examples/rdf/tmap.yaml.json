@@ -1,0 +1,181 @@
+{
+  "@id": "http://example.org/tmap", 
+  "@type": "CommandLineTool", 
+  "baseCmd": [
+    "tmap", 
+    "mapall"
+  ], 
+  "inputs": [
+    {
+      "depth": 0, 
+      "id": "#reads", 
+      "schema": {
+        "adapter": {
+          "position": 1
+        }, 
+        "type": "File"
+      }
+    }, 
+    {
+      "depth": 1, 
+      "id": "#stages", 
+      "schema": {
+        "adapter": {
+          "position": 2
+        }, 
+        "items": {
+          "fields": [
+            {
+              "adapter": {
+                "position": 0, 
+                "prefix": "stage", 
+                "separator": ""
+              }, 
+              "name": "stageId", 
+              "type": "int"
+            }, 
+            {
+              "adapter": {
+                "position": 1, 
+                "prefix": "-n"
+              }, 
+              "name": "stageOption1", 
+              "type": "boolean"
+            }, 
+            {
+              "adapter": {
+                "position": 2
+              }, 
+              "items": [
+                "Map1", 
+                "Map2", 
+                "Map3", 
+                "Map4"
+              ], 
+              "name": "algos", 
+              "type": "array"
+            }
+          ], 
+          "type": "record"
+        }, 
+        "type": "array"
+      }
+    }
+  ], 
+  "outputs": [
+    {
+      "depth": 0, 
+      "id": "#sam", 
+      "schema": {
+        "adapter": {
+          "glob": "output.sam"
+        }, 
+        "type": "File"
+      }
+    }
+  ], 
+  "schemaDefs": [
+    {
+      "fields": [
+        {
+          "adapter": {
+            "position": 0
+          }, 
+          "name": "algo", 
+          "symbols": [
+            "map1"
+          ], 
+          "type": "enum"
+        }, 
+        {
+          "adapter": {
+            "position": 1, 
+            "prefix": "--seed-length"
+          }, 
+          "name": "seedLength", 
+          "type": "int"
+        }
+      ], 
+      "name": "Map1", 
+      "type": "record"
+    }, 
+    {
+      "fields": [
+        {
+          "adapter": {
+            "position": 0
+          }, 
+          "name": "algo", 
+          "symbols": [
+            "map2"
+          ], 
+          "type": "enum"
+        }, 
+        {
+          "adapter": {
+            "position": 1, 
+            "prefix": "--max-seed-hits"
+          }, 
+          "name": "maxSeedHits", 
+          "type": "int"
+        }
+      ], 
+      "name": "Map2", 
+      "type": "record"
+    }, 
+    {
+      "fields": [
+        {
+          "adapter": {
+            "position": 0
+          }, 
+          "name": "algo", 
+          "symbols": [
+            "map3"
+          ], 
+          "type": "enum"
+        }, 
+        {
+          "adapter": {
+            "position": 1, 
+            "prefix": "--fwd-search"
+          }, 
+          "name": "fwdSearch", 
+          "type": "boolean"
+        }
+      ], 
+      "name": "Map3", 
+      "type": "record"
+    }, 
+    {
+      "fields": [
+        {
+          "adapter": {
+            "position": 0
+          }, 
+          "name": "algo", 
+          "symbols": [
+            "map4"
+          ], 
+          "type": "enum"
+        }, 
+        {
+          "adapter": {
+            "position": 1, 
+            "prefix": "--seed-step"
+          }, 
+          "name": "seedStep", 
+          "type": "int"
+        }
+      ], 
+      "name": "Map4", 
+      "type": "record"
+    }
+  ], 
+  "stdin": {
+    "@type": "Transform", 
+    "language": "jsonpointer", 
+    "value": "#inputs/reads/path"
+  }, 
+  "stdout": "output.sam"
+}
