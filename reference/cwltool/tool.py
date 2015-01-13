@@ -91,6 +91,8 @@ def resolve_eval(job, v):
     if isinstance(v, dict):
         if "$expr" in v:
             return jseval(job, v["$expr"])
+        elif "$tmpl" in v:
+            return jseval(job, "_.template(%s)({\"$job\": $job})" % (json.dumps(v["$tmpl"])))
         elif "$job" in v:
             return resolve_pointer(job, v["$job"])
     return v
@@ -293,7 +295,7 @@ class Tool(object):
         adapter = self.tool["adapter"]
         adapters = [{"order": [-1000000],
                      "schema": tool_schema_doc["properties"]["adapter"]["properties"]["baseCmd"],
-                     "value": adapter['baseCmd'],
+                     "value": [resolve_eval(inputs, bc) for bc in adapter['baseCmd']],
                      "$ref_base_url": "file:"+toolpath
                  }]
 
@@ -357,7 +359,6 @@ class Tool(object):
             j.stdin = j.stdin if os.path.isabs(j.stdin) else os.path.join(basedir, j.stdin)
 
         j.command_line = flatten(map(lambda a: adapt(a, joborder, d.mapper), adapters))
-
         j.pathmapper = d
 
         return j

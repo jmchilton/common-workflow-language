@@ -1,14 +1,20 @@
 import subprocess
 import json
 import threading
+import os
 
 class JavascriptException(Exception):
     pass
 
+module_dir = os.path.dirname(os.path.abspath(__file__))
+
 def execjs(js):
     nodejs = subprocess.Popen(["nodejs"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-    fn = "\"use strict\";\n(function()%s)()" % (js if isinstance(js, basestring) and len(js) > 1 and js[0] == '{' else ("{return (%s);}" % js))
+    with open(os.path.join(module_dir, "underscore.js")) as f:
+        us = f.read()
+
+    fn = "\"use strict\";\n%s\n(function()%s)()" % (us, js if isinstance(js, basestring) and len(js) > 1 and js[0] == '{' else ("{return (%s);}" % js))
     script = "console.log(JSON.stringify(require(\"vm\").runInNewContext(%s, {})))" % json.dumps(fn)
 
     def term():

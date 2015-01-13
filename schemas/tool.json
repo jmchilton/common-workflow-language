@@ -13,10 +13,20 @@
                 }
             }
         },
+        "template": {
+            "type": "object",
+            "required": ["$tmpl"],
+            "properties": {
+                "$tmpl": {
+                    "type": "string"
+                }
+            }
+        },
         "strOrExpr": {
             "oneOf": [
                 { "type": "string" },
                 { "$ref": "#definitions/expression" },
+                { "$ref": "#definitions/template" },
 
                 { "$ref": "https://raw.githubusercontent.com/common-workflow-language/common-workflow-language/draft-1/schemas/metaschema.json#definitions/$job" }
             ]
@@ -101,9 +111,21 @@
                 },
                 "baseCmd": {
                     "oneOf": [
-                        { "$ref": "https://raw.githubusercontent.com/common-workflow-language/common-workflow-language/draft-1/schemas/metaschema.json#definitions/stringArray" },
+                        {
+                            "type": "array",
+                            "items": {
+                                "oneOf": [
+                                    {"type": "string"},
+                                    {"$ref": "#definitions/expression"},
+                                    {"$ref": "#definitions/template"}
+                                ]
+                            },
+                            "minItems": 1,
+                            "uniqueItems": false
+                        },
                         { "type": "string" },
-                        { "$ref": "#definitions/expression" }
+                        { "$ref": "#definitions/expression" },
+                        { "$ref": "#definitions/template" }
                     ]
                 },
                 "stdout": { "$ref": "#definitions/strOrExpr" },
