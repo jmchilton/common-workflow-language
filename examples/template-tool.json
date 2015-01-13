@@ -8,22 +8,25 @@
                 "type": "docker",
                 "imageId": "arvados/jobs"
             }
-        }
+        },
+        "templates": [
+            {
+                "name": "foo.txt",
+                "value": {"$tmpl": "The file is <%= $job.file1.path %>\n"}
+            }
+        ]
     },
     "inputs": {
         "type": "object",
         "required": [ "file1" ],
         "properties": {
             "file1": {
-                "type": "file",
-                "adapter": {
-                    "order": 1
-                }
+                "type": "file"
             }
         }
     },
     "outputs": {},
     "adapter": {
-        "baseCmd": ["echo", {"$tmpl": "foo=<%= $job.file1.path %>"}]
+        "baseCmd": ["cat", "foo.txt"]
     }
 }

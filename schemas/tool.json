@@ -90,7 +90,18 @@
                         "mem": { "$ref": "#definitions/intOrExpr" },
                         "network": { "$ref": "#definitions/boolOrExpr" }
                     }
+                },
+                "templates": {
+                    "type":"array",
+                    "items": {
+                        "type":"object",
+                        "properties": {
+                            "name": {"$ref": "#definitions/strOrExpr"},
+                            "value": {"$ref": "#definitions/strOrExpr"}
+                        }
+                    }
                 }
+
             }
         },
         "adapter": {

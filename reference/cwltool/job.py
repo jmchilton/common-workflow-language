@@ -36,6 +36,10 @@ class Job(object):
             if self.stdout:
                 stdout = open(os.path.join(outdir, self.stdout), "wb")
 
+            for t in self.templates:
+                with open(os.path.join(outdir, t), "w") as f:
+                    f.write(self.templates[t])
+
             sp = subprocess.Popen(runtime + self.command_line, shell=False, stdin=stdin, stdout=stdout)
             sp.wait()
 

@@ -341,6 +341,8 @@ class Tool(object):
         else:
             j.stdout = None
 
+        j.templates = {}
+
         d = None
         a = self.tool.get("requirements")
         if a:
@@ -351,6 +353,8 @@ class Tool(object):
                     if c.get("type") == "docker":
                         d = DockerPathMapper(referenced_files, basedir)
                         j.container = c
+            for t in a.get("templates", []):
+                j.templates[resolve_eval(inputs, t["name"])] = resolve_eval(inputs, t["value"])
 
         if d is None:
             d = PathMapper(referenced_files, basedir)
@@ -360,5 +364,7 @@ class Tool(object):
 
         j.command_line = flatten(map(lambda a: adapt(a, joborder, d.mapper), adapters))
         j.pathmapper = d
+
+
 
         return j
