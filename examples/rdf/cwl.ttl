@@ -32,7 +32,6 @@ cwl:ArgumentAdapter
 cwl:AvroTypeDef
   rdf:type owl:Class ;
   rdfs:comment "Type definition compatible with Apache Avro"^^xsd:string ;
-  rdfs:subClassOf cwl:ParameterSchema ;
 .
 cwl:CommandLineTool
   rdf:type owl:Class ;
@@ -49,16 +48,6 @@ cwl:DockerContainer
   rdfs:comment "Signifies the process (CommandLineTool) needs to run in a Docker container. Image is specified using cwl:hasImageSpec."^^xsd:string ;
   rdfs:subClassOf cwl:ContainerRequirement ;
 .
-cwl:File
-  rdf:type owl:Class ;
-  rdfs:comment "File content specified through cnt:contentUrl in absolute paths. Additional triples that can be propagated to files produced by workflows should be kept in a node referenced through cwl:hasAnnotations. Likewise, for accompanying index files, use cwl:hasIndexFile. TODO: Add file properties and look for a possible base class."^^xsd:string ;
-  rdfs:subClassOf owl:Thing ;
-.
-cwl:IndexFile
-  rdf:type owl:Class ;
-  rdfs:comment "Index files accompany data files and follow a naming convention."^^xsd:string ;
-  rdfs:subClassOf cwl:File ;
-.
 cwl:LiteralOrTransform
   rdf:type owl:Class ;
   rdfs:subClassOf owl:Thing ;
@@ -67,11 +56,6 @@ cwl:OutputAdapter
   rdf:type owl:Class ;
   rdfs:comment "Describes how to report process outputs from generated files. This includes file metadata and accompanying index files."^^xsd:string ;
   rdfs:subClassOf cwl:Adapter ;
-.
-cwl:ParameterSchema
-  rdf:type owl:Class ;
-  rdfs:comment "TODO: subclass with AvroTypeDefinition"^^xsd:string ;
-  rdfs:subClassOf owl:Thing ;
 .
 cwl:RequiredCPU
   rdf:type owl:Class ;
@@ -194,12 +178,6 @@ cwl:hasGlob
   rdfs:comment "Output adapters select produced files using a glob expression. Range is either string or Transform."^^xsd:string ;
   rdfs:domain cwl:OutputAdapter ;
   rdfs:range cwl:LiteralOrTransform ;
-.
-cwl:hasIndexFile
-  rdf:type owl:ObjectProperty ;
-  rdfs:comment "Files have accompanying index files based on a naming convention."^^xsd:string ;
-  rdfs:domain cwl:File ;
-  rdfs:range cwl:IndexFile ;
 .
 cwl:hasItemSeparator
   rdf:type owl:DatatypeProperty ;
