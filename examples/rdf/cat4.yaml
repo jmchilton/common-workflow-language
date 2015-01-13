@@ -1,8 +1,8 @@
 inputs:
-  id: "#file1"
-  depth: 0
-  schema:
-    type: File
+  - id: "#file1"
+    depth: 0
+    schema:
+      type: File
 
 requirements:
   - "@type": DockerContainer

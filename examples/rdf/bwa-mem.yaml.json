@@ -29,7 +29,7 @@
       "depth": 1, 
       "id": "#reads", 
       "schema": {
-        "adaper": {
+        "adapter": {
           "position": 3
         }, 
         "items": "File", 

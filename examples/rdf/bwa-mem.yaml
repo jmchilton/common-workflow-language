@@ -19,7 +19,7 @@ inputs:
     schema:
       type: array
       items: File
-      adaper:
+      adapter:
         position: 3
 
   - id: "#minimum_seed_length"

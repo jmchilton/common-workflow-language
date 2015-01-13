@@ -44,7 +44,7 @@
   "position": "cwl:hasCommandLinePosition",
   "prefix": "cwl:hasPrefix",
   "separator": "cwl:hasSeparator",
-  "itemPrefix": "cwl:hasItemPrefix",
+  "itemSeparator": "cwl:hasItemSeparator",
   "inputs": "wfdesc:hasInput",
   "outputs": "wfdesc:hasOutput",
   "depth": "cwl:hasDepth",
@@ -52,7 +52,6 @@
   "language": "cwl:hasLanguage",
   "stdin": "cwl:hasStdin",
   "stdout": "cwl:hasStdout",
-  "includeIndex": "cwl:includeIndexFile",
   "modifiesDir": "cwl:modifiesMountedDirectory",
   "value": "rdf:value"
 }
