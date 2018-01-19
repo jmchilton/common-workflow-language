@@ -1629,3 +1629,34 @@
   }}
   tool: "v1.0/size-expression-tool.cwl"
   doc: Test use of size in expressions for a few files
+
+- job: "v1.0/echo-tool-job-false.yml"
+  output: {
+    "out": "false\n"
+  }
+  tool: "v1.0/echo-tool-bool-mandatory.cwl"
+  doc: Test mandatory boolean parameter set to false
+- job: "v1.0/echo-tool-job-true.yml"
+  output: {
+    "out": "true\n"
+  }
+  tool: "v1.0/echo-tool-bool-mandatory.cwl"
+  doc: Test mandatory boolean parameter set to true
+- job: "v1.0/echo-tool-job-false.yml"
+  output: {
+    "out": "false\n"
+  }
+  tool: "v1.0/echo-tool-bool-optional.cwl"
+  doc: Test optional boolean parameter set to false
+- job: "v1.0/echo-tool-job-true.yml"
+  output: {
+    "out": "true\n"
+  }
+  tool: "v1.0/echo-tool-bool-optional.cwl"
+  doc: Test optional boolean parameter set to true
+- job: "v1.0/echo-tool-job-null.yml"
+  output: {
+    "out": "null\n"
+  }
+  tool: "v1.0/echo-tool-bool-optional.cwl"
+  doc: Test optional boolean parameter unset
