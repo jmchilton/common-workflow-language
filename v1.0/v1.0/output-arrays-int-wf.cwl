@@ -27,7 +27,7 @@ steps:
         o:
           type: int[]
       expression: >
-        ${return {'o': Array.apply(null, {length: inputs.i}).map(Number.call, Number)};}
+        ${return {'o': Array.apply(null, new Array(inputs.i)).map(Number.call, Number)};}
   step2:
     in:
       i:
