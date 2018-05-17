@@ -1576,7 +1576,7 @@
      }
   tags: [ resource ]
 
-- job: v1.0/empty.json
+- job: v1.0/null-expression-echo-job.json
   tool: v1.0/echo-tool.cwl
   should_fail: true
   doc: Test Any without defaults, unspecified, should fail.
