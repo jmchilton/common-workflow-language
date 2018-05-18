@@ -982,7 +982,7 @@
     }
   tool: v1.0/dir2.cwl
   doc: Test directory input in Docker
-  tags: [ required ]
+  tags: [ shell_command ]
 
 - job: v1.0/dir3-job.yml
   output:
